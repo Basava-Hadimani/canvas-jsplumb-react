@@ -2,11 +2,13 @@ import  React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import  '../styles/style.scss';
 
+var xPos;
+var yPos;
 
 function rect(props) {
-    const {ctx, x, y, width, height, name} = props;
+    const {ctx, x, y, width, height} = props;
     ctx.fillStyle="#FF0000";
-    ctx.fillText(name,70,40)
+  //  ctx.fillText(name,70,40)
     ctx.fillRect(x, y, width, height);
 }
 
@@ -15,18 +17,34 @@ class IndexForm extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      flag : true,
-      X : 0,
-      Y : 0
+      flag : true
     }
   }
 
 
 
-updateCanvas(e) {
+componentDidMount(){
+
+
+$('#Element1').draggable(
+    {
+        drag: function(){
+            var offset = $(this).offset();
+             xPos = offset.left;
+             yPos = offset.top;
+            console.log("X : " + xPos+"Y : "+yPos)
+        },
+
+        revert: function(event) {
+          return !event
+          }
+    });
+}
+
+updateCanvas() {
     const ctx = this.refs.canvas.getContext('2d');
 
-    rect({ctx, x: 50, y: 50, width: 100, height: 100, name : e.target.id});
+    rect({ctx, x: 50, y: 50, width: 100, height: 100});
 
 }
 
@@ -37,17 +55,12 @@ hideParent(){
 
 
 render() {
-     return (<div onClick={(e)=>{
-     if (e.target.id){
-     this.updateCanvas(e);
-     }
-
-
-     }}>
+console.log(this.state);
+     return (<div>
          <canvas ref="canvas" className="canvas" width={1292} height={520}/>
          <div className="box">
          <div className={this.state.flag?"parent":"hideParent"}>
-         <div id="Element1" className="ui-widget-header" >
+         <div id="Element1" draggable='true' className="ui-widget-header" >
             Element 1
          </div>
          <div  id="Element2" className="ui-widget-header">
