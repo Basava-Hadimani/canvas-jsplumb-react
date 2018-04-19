@@ -20,6 +20,7 @@
 
 	background-color: #4444;
 	border : 5px solid #000066;
+	background-image : url("http://www.sertactok.com/upload/katalog2/repeat_background1.gif");
 
 }
 
@@ -67,7 +68,7 @@
 	right : 0px;
 }
 
-#Element1, #Element2, #Element3, #Element4{
+#circle, #triangle, #square, #rectangle{
 	disply : block;
 	height : 30px;
 	width : 150px;
@@ -77,14 +78,94 @@
 	border : 1px solid #9999;
 	text-align:center;
 	color : red;
+	cursor : move;
 }
 
-#Element2{
+#triangle{
 	top : 70px;
 }
-#Element3{
+#square{
 	top : 110px;
 }
-#Element4{
+#rectangle{
 	top : 150px;
+}
+
+.element1drag, .element2drag, .element3drag, .element4drag{
+	background-color : #996633;
+	display : block;
+	position : absolute;
+	height : 100px;
+	width : 100px;
+	cursor : move;
+	text-align : center;
+}
+
+.element1, .element2, .element3, .element4{
+	
+	disply : block;
+	height : 30px;
+	width : 150px;
+	position : absolute;
+	top : 30px;
+	left : 20px;
+	border : 1px solid #9999;
+	text-align:center;
+	color : red;
+	cursor : move;
+}
+
+.element2{
+	top : 70px;
+}
+.element3{
+	top : 110px;
+}
+.element4{
+	top : 150px;
+}
+
+
+#start{
+	background-color : #996633;
+	display : block;
+	position : absolute;
+	height : 100px;
+	width : 100px;
+	cursor : move;
+	top : 300px;
+	left : 200px;
+	text-align : center;	
+}
+
+#end{
+	background-color : #996633;
+	display : block;
+	position : absolute;
+	height : 100px;
+	width : 100px;
+	cursor : move;
+	top : 300px;
+	left : 800px;	
+	text-align : center;
+}
+
+#direction{
+	display : inline-block;
+	position : absolute;
+	height : 500px;
+	width : 600px;
+	top : 450px;
+	left : 850px;
+}
+
+#directionImg{
+	transform: rotate(20deg);
+}
+
+#text{
+	
+	position : absolute;
+	top : 170px;
+	left : -50px;
 }
