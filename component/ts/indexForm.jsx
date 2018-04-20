@@ -142,7 +142,6 @@ $('.element1').draggable(
           return !event
           }
     });
-
 $('.element2').draggable(
     {
         drag: function(){
@@ -156,6 +155,8 @@ $('.element2').draggable(
           return !event
           }
     });
+
+
 $('.element3').draggable(
     {
         drag: function(){
@@ -169,6 +170,7 @@ $('.element3').draggable(
           return !event
           }
     });
+
 $('.element4').draggable(
     {
         drag: function(){
@@ -182,7 +184,6 @@ $('.element4').draggable(
           return !event
           }
     });
-
 
 
 }
