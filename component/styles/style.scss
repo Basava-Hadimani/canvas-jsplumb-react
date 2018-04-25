@@ -36,6 +36,7 @@
 	left: 85%;
 	-webkit-transition: left 2s;
 	transition: left 2s;
+	z-index : 99;
 }
 .child, .hideChild{
 
@@ -99,10 +100,11 @@
 	width : 100px;
 	cursor : move;
 	text-align : center;
+	z-index : 99;
 }
 
 .element1, .element2, .element3, .element4{
-	
+
 	disply : block;
 	height : 30px;
 	width : 150px;
@@ -135,7 +137,8 @@
 	cursor : move;
 	top : 300px;
 	left : 200px;
-	text-align : center;	
+	text-align : center;
+	z-index : 99;
 }
 
 #end{
@@ -146,8 +149,9 @@
 	width : 100px;
 	cursor : move;
 	top : 300px;
-	left : 800px;	
+	left : 800px;
 	text-align : center;
+	z-index : 99;
 }
 
 #direction{
@@ -160,11 +164,14 @@
 }
 
 #directionImg{
-	transform: rotate(20deg);
+	transform: rotate(120deg);
+	position : absolute;
+	top : -50px;
+	left : -89px;
 }
 
 #text{
-	
+
 	position : absolute;
 	top : 170px;
 	left : -50px;

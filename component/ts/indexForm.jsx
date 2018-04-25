@@ -7,6 +7,9 @@ import jsplumb from 'jsplumb';
 var xPos;
 var yPos;
 var elementID;
+var startObj = [];
+var connectionObj = [];
+var count = 0;
 
 function shape(props) {
     const {ctx, x, y, width, height, name} = props;
@@ -91,7 +94,6 @@ updateCanvas(id){
 
   elementID = `${ID}drag`;
 
-console.log(elementID)
    const item = this.state.itemArray;
 
    if (xPos < 10 || yPos < 150  || xPos > 1180 || yPos > 574){
@@ -135,7 +137,6 @@ $('.element1').draggable(
             var offset = $(this).offset();
              xPos = offset.left;
              yPos = offset.top;
-            console.log("X : " + xPos+"Y : "+yPos)
         },
 
         revert: function(event) {
@@ -149,7 +150,6 @@ $('.element2').draggable(
             var offset = $(this).offset();
              xPos = offset.left;
              yPos = offset.top;
-            console.log("X : " + xPos+"Y : "+yPos)
         },
 
         revert: function(event) {
@@ -162,7 +162,7 @@ $('.element3').draggable(
             var offset = $(this).offset();
              xPos = offset.left;
              yPos = offset.top;
-            console.log("X : " + xPos+"Y : "+yPos)
+
         },
 
         revert: function(event) {
@@ -175,7 +175,6 @@ $('.element4').draggable(
             var offset = $(this).offset();
              xPos = offset.left;
              yPos = offset.top;
-            console.log("X : " + xPos+"Y : "+yPos)
         },
 
         revert: function(event) {
@@ -193,22 +192,22 @@ componentDidUpdate(){
 
   var originX = 0;
   var originY = 0;
-  
-    
+
+  var errorFlag = false;
+
 
               jsPlumb.draggable("start");
               jsPlumb.draggable("end");
 
             jsPlumb.draggable($(".element1drag"), {
             drag: function(event) {
-    
+
             },
             stop: function(event, ui) {
 
                 let X = event.pos[0];
                 let Y = event.pos[1];
 
-                console.log(X + "   " + Y);
 
                 if (X < 10 || Y < 150  ||X > 1180 || Y > 574){
                   alert("out of canvas");
@@ -219,9 +218,6 @@ componentDidUpdate(){
                   element.style.top = "160px";
                 */
 
-
-
-                  console.log(element.style.top);
                 }
 
             }
@@ -229,7 +225,7 @@ componentDidUpdate(){
 
             jsPlumb.draggable($(".element2drag"), {
             drag: function() {
- 
+
             },
             stop: function(event, ui) {
 
@@ -237,12 +233,9 @@ componentDidUpdate(){
                 let X = event.pos[0];
                 let Y = event.pos[1];
 
-                console.log(X + "   " + Y);
-
                 if (X < 10 || Y < 150  ||X > 1180 || Y > 574){
                   alert("out of canvas");
 
-                  console.log(X + "   " + Y);
                 }
 
             }
@@ -256,15 +249,13 @@ componentDidUpdate(){
                 let X = event.pos[0];
                 let Y = event.pos[1];
 
-                console.log(X + "   " + Y);
 
                 if (X < 10 || Y < 150  ||X > 1180 || Y > 574){
                   alert("out of canvas");
 
-                  console.log(X + "   " + Y);
                 }
 
- 
+
             },
             stop: function(event, ui) {
 
@@ -272,12 +263,10 @@ componentDidUpdate(){
                 let X = event.pos[0];
                 let Y = event.pos[1];
 
-                console.log(X + "   " + Y);
 
                 if (X < 10 || Y < 150  ||X > 1180 || Y > 574){
                   alert("out of canvas");
 
-                  console.log(X + "   " + Y);
                 }
 
             }
@@ -293,108 +282,155 @@ componentDidUpdate(){
                 let X = event.pos[0];
                 let Y = event.pos[1];
 
-                console.log(X + "   " + Y);
 
                 if (X < 10 || Y < 150  ||X > 1180 || Y > 574){
                   alert("out of canvas");
 
-                  console.log(X + "   " + Y);
                 }
 
             }
             });
 
 
-           /* jsPlumb.connect({
-              source:$("#element1drag"), 
-              target:$("#element2drag"),
-              anchors:["Right", "Left" ],
-              endpoint:"Rectangle",
-              endpointStyle:{ fill: "yellow" }
-            });
-            
-          
-            var common = {
-              anchors:[ "BottomCenter", "TopCenter" ],
-              endpoints:["Dot", "Blank" ]
-            };
-
-            jsPlumb.connect({ source:$("#element2drag"), target:$("#element1drag") }, common);
-
-            jsPlumb.connect({ source:$("#element3drag"), target:$("#element4drag") }, common);
-
-           
-
-            var exampleGreyEndpointOptions = {
-                endpoint:"Rectangle",
-                paintStyle:{ width:25, height:21, fill:'#666' },
-                isSource:true,
-                connectorStyle : { stroke:"#666" },
-                isTarget:true
-              };
-
-
-              jsPlumb.addEndpoint($("#element1drag"), { 
-                anchor:"Bottom"
-              }, exampleGreyEndpointOptions); 
-
-              jsPlumb.addEndpoint($("#element2drag"), { 
-                anchor:"Top" 
-              }, exampleGreyEndpointOptions);
-
-              var endpointOptions = { isTarget:true, endpoint:"Rectangle", paintStyle:{ fill:"gray" } };
-              var endpoint = jsPlumb.addEndpoint($("#element3drag"), endpointOptions);
- */
             var common = {
               isSource:true,
               isTarget:true,
-              connector: ["Straight"]
+              connector: ["Straight"],
+              connectorOverlays:[
+                  [ "Arrow", { width:10, length:30, location:1, id:"arrow" } ],
+                  [ "Label", { label:"", id:"label" } ]
+                ]
             };
 
-            jsPlumb.addEndpoint($(".element1drag"), { 
-              anchors:["Right"]
-            }, common); 
-
-            jsPlumb.addEndpoint($(".element2drag"), { 
-              anchors:["Right"]
-            }, common); 
-
-            jsPlumb.addEndpoint($(".element3drag"), { 
-              anchors:["Right"]
-            }, common); 
-
-            jsPlumb.addEndpoint($(".element4drag"), { 
+            jsPlumb.addEndpoint($(".element1drag"), {
               anchors:["Right"]
             }, common);
 
-            jsPlumb.addEndpoint($(".element1drag"), { 
-              anchors:["Left"]
-            }, common); 
+            jsPlumb.addEndpoint($(".element2drag"), {
+              anchors:["Right"]
+            }, common);
 
-            jsPlumb.addEndpoint($(".element2drag"), { 
-              anchors:["Left"]
-            }, common); 
+            jsPlumb.addEndpoint($(".element3drag"), {
+              anchors:["Right"]
+            }, common);
 
-            jsPlumb.addEndpoint($(".element3drag"), { 
-              anchors:["Left"]
-            }, common); 
+            jsPlumb.addEndpoint($(".element4drag"), {
+              anchors:["Right"]
+            }, common);
 
-            jsPlumb.addEndpoint($(".element4drag"), { 
+            jsPlumb.addEndpoint($(".element1drag"), {
               anchors:["Left"]
             }, common);
 
-            jsPlumb.addEndpoint($("#start"), { 
-              anchors:["Right"]
-            }, common);  
-
-            jsPlumb.addEndpoint($("#end"), { 
+            jsPlumb.addEndpoint($(".element2drag"), {
               anchors:["Left"]
-            }, common); 
+            }, common);
+
+            jsPlumb.addEndpoint($(".element3drag"), {
+              anchors:["Left"]
+            }, common);
+
+            jsPlumb.addEndpoint($(".element4drag"), {
+              anchors:["Left"]
+            }, common);
+
+            jsPlumb.addEndpoint($("#start"), {
+              anchors:["Right"]
+            }, common);
+
+
+
+            jsPlumb.addEndpoint($("#end"), {
+              anchors:["Left"]
+            }, common);
+
+}
+
+componentWillUpdate(){
+  var errorFlag = false;
+  jsPlumb.bind("connection", function(info) {
+      console.log("Source id : " + info.sourceId);
+      console.log("Target id : " + info.targetId);
+
+
+
+      if (info.targetId === "start"){
+         jsPlumb.detach(info.connection);
+         errorFlag = true;
+      }
+      else if (info.sourceId === "end"){
+         jsPlumb.detach(info.connection);
+          errorFlag = true;
+      }
+      else if(info.sourceId === info.targetId){
+
+        jsPlumb.detach(info.connection);
+         errorFlag = true;
+      }
+      else if (info.sourceId === "start" && info.targetId === "end"){
+        jsPlumb.detach(info.connection);
+         errorFlag = true;
+      }
+
+      connectionObj.map((item, Index)=>{
+
+          if( (item.start === info.targetId)  && (item.end === info.sourceId)){
+              jsPlumb.detach(info.connection);
+              errorFlag = true;
+
+          }
+      })
+
+
+        connectionObj.map((item, index)=>{
+          console.log("source element");
+          if(info.targetId === item.start){
+            console.log("match found");
+            var nextElement = [];
+
+            nextElement.push(info.targetId);
+                for(var index = 0; index < startObj.length;index++ ){
+                  if (Object.keys(startObj[index]) == nextElement[0]){
+                    nextElement = Object.values(startObj[index]);
+                    if(nextElement[0] == info.sourceId){
+                      console.log("loop detected");
+                      jsPlumb.detach(info.connection);
+                       errorFlag = true;
+                      break;
+                    }
+                    index = -1;
+                  }
+              }
+
+          }
+        } )
+
+        if(!errorFlag){
+
+          if(!connectionObj.length){
+            connectionObj.push({start : info.sourceId, end : info.targetId});
+
+            startObj.push({[info.sourceId]: info.targetId});
+          }
+
+          else if(connectionObj[connectionObj.length - 1].start !== info.sourceId && connectionObj[connectionObj.length - 1].end !== info.targetId){
+            connectionObj.push({start : info.sourceId, end : info.targetId});
+
+            startObj.push({[info.sourceId]: info.targetId});
+          }
+
+
+
+          }
+      console.log("Connection object");
+      console.log(connectionObj);
+      console.log("start object");
+      console.log(startObj);
+  });
 
 }
 
 render() {
-console.log(this.state);
 
      return (<div /*onClick={(e)=>{
       if(e.target.className === "element1" || e.target.className === "element2" || e.target.className === "element3" || e.target.className === "element4"){
@@ -439,16 +475,16 @@ console.log(this.state);
 
         <div id="start">
             Start
-        </div> 
+        </div>
 
         <div id="end">
             End
-        </div>   
+        </div>
 
         {this.state.arrowShow?
         <div id="direction">
           <p id="text" >Drag and drop elements from box to canvas</p>
-          <img id="directionImg" src="http://www.onlinehobbyshop.nl/wp-content/uploads/2015/10/curved-arrow-left.png" alt="direction" />
+          <img id="directionImg" src="https://forums.macrumors.com/attachments/art_arrow_brush-png.202296/" alt="direction" />
         </div>
         :
         <div></div>
